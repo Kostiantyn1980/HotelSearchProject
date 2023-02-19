@@ -23,3 +23,21 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// const position_placeholder = '[placeholder="position"]';
+import selectors from '../support/selector.js'
+
+Cypress.Commands.add('searchForPosition', (position_name) => {
+    cy.get(selectors.position_placeholder).type(position_name, { force: true })
+        cy.get('button').contains('search').click({force: true})
+
+})
+
+Cypress.Commands.add('completesearch', (position_name, location, company_name) => {
+    cy.get(selectors.position_placeholder).type(position_name, { force: true })
+    cy.get(selectors.location_placeholder).type(location, { force: true })
+    cy.get(selectors.company_placeholder).type(company_name, { force: true })
+
+    cy.get('button').contains('search').click({force: true})
+
+})

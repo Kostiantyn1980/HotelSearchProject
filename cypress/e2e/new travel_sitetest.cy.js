@@ -1,5 +1,7 @@
 ///<reference types = "Cypress"/>
 
+import { data } from '../fixtures/params.json'
+
 describe('The flight tab test will verify the flights functionality', () => {
 
     const flights_tab = '[data-cy="Flight"]'
@@ -31,14 +33,25 @@ describe('The flight tab test will verify the flights functionality', () => {
     })
 
     it('navigate to the flights tab', () => {
+        cy.viewport(800, 600)
+        cy.screenshot("test1")
         cy.get(origin_placeholder).should("be.visible")
         cy.get(flights_tab).invoke('attr', 'aria-expanded').should('eq', 'true')
         cy.get(flights_tab).invoke('text').should('eq', 'flight')
     })
 
     it('populates origin and destination', () => {
-        cy.get(origin_placeholder).type("Paris").invoke("val").should('eq', 'Paris')
-        cy.get(destination_placeholder).type("London").invoke("val").should('eq', 'London')
+
+        data.forEach(Element => {
+            // cy.pause();
+            cy.get(origin_placeholder).clear().type(Element.from).invoke("val").should('eq', Element.from)
+            // cy.pause();
+            cy.get(destination_placeholder).clear().type(Element.to).invoke("val").should('eq', Element.to)
+
+        })
+
+        // cy.get(origin_placeholder).type(data[1].from).invoke("val").should('eq', data[1].from)
+        // cy.get(destination_placeholder).type(data[1].to).invoke("val").should('eq', data[1].to)
         // cy.get(origin_placeholder).invoke("val").should('eq','Paris')
         // cy.get(destination_placeholder).invoke("val").should('eq','London')
     })
@@ -52,8 +65,8 @@ describe('The flight tab test will verify the flights functionality', () => {
     })
 
     it('check radio buttons', () => {
-       cy.get(business_radio_button).click().should('be.checked')
-       cy.get(economy_radio_button).click().should('be.checked')
-       cy.get(f_class_radio_button).click().should('be.checked')
+        cy.get(business_radio_button).click().should('be.checked')
+        cy.get(economy_radio_button).click().should('be.checked')
+        cy.get(f_class_radio_button).click().should('be.checked')
     })
 })
